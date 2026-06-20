@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deema — Medical Quiz Portal</title>
+  <meta name="description" content="Deema is a premium medical study and quiz portal featuring a dark blue aesthetic and high-yield active recall tools.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <div class="logo-section">
+        <div class="logo-logo">
+          <span>D</span>
+        </div>
+        <div class="logo-title">
+          <h1>DEEMA</h1>
+          <span>Medical Quiz</span>
+        </div>
+      </div>
+      
+      <nav>
+        <ul>
+          <li class="active"><a href="#" data-view="home"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="#" data-view="study"><i class="fas fa-book"></i> Study Hub</a></li>
+          <li><a href="#" data-view="bookmarks"><i class="fas fa-bookmark"></i> Bookmarks</a></li>
+          <li><a href="#" data-view="analytics"><i class="fas fa-chart-line"></i> Stats</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main>
+    
+    <!-- VIEW 1: DASHBOARD (HOME) -->
+    <section id="home" class="view active">
+      <div class="hero-card">
+        <h2 class="hero-subtitle">Continuous Clinical Evaluation</h2>
+        <p class="hero-desc">
+          "Deema" represents continuous, steady learning. Review clinical summaries, evaluate your understanding with active recall questions, and track your metrics.
+        </p>
+        <div class="mode-selectors">
+          <button class="btn" onclick="QuizApp.promptQuizSettings('all')">
+            <i class="fas fa-play"></i> Start Comprehensive Quiz
+          </button>
+          <button class="btn btn-secondary" onclick="QuizApp.switchView('study')">
+            <i class="fas fa-book-open"></i> Browse Study Hub
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Overview Grid -->
+      <div class="domain-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 2.5rem;">
+        <div class="domain-card stat-card">
+          <div class="stat-val" id="dashTotalQuestions">--</div>
+          <span class="stat-label">Total Questions</span>
+        </div>
+        <div class="domain-card stat-card">
+          <div class="stat-val" id="dashTotalBookmarks">--</div>
+          <span class="stat-label">Bookmarks</span>
+        </div>
+        <div class="domain-card stat-card">
+          <div class="stat-val" id="dashQuizzesTaken">--</div>
+          <span class="stat-label">Quizzes Taken</span>
+        </div>
+        <div class="domain-card stat-card">
+          <div class="stat-val" id="dashAverageScore">--</div>
+          <span class="stat-label">Average Score</span>
+        </div>
+      </div>
+
+      <!-- Domain Selection Section -->
+      <h3 class="section-title">Select Study Domain</h3>
+      <div id="domainGrid" class="domain-grid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: QUIZ INTERFACE -->
+    <section id="quiz" class="view">
+      <div class="quiz-shell">
+        <div class="quiz-header">
+          <div class="progress-details">
+            <span id="progressText" style="font-weight: 600; font-size: 0.95rem;">Question 1 of 10</span>
+          </div>
+          <div class="timer-pill" id="quizTimerContainer" style="display: none;">
+            <i class="far fa-clock"></i>
+            <span id="timerVal">00:00</span>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div id="quizProgressFill" class="progress-fill"></div>
+        </div>
+
+        <div class="question-card">
+          <span id="bookmarkBtn" class="bookmark-icon" title="Save this question">
+            <i class="fas fa-bookmark"></i>
+          </span>
+          <div id="questionCategory" class="question-category">Clinical Attachments</div>
+          <div id="questionText" class="question-text">Question content goes here...</div>
+          
+          <div id="optionsList" class="options-list">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <div class="quiz-footer">
+          <button class="btn btn-secondary" onclick="if(confirm('Are you sure you want to quit the quiz?')) { QuizApp.switchView('home'); clearInterval(QuizApp.timerInterval); }">
+            <i class="fas fa-sign-out-alt"></i> Quit
+          </button>
+          <div id="quizFooter">
+            <!-- Submit or Next buttons injected via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: RESULTS SCORECARD -->
+    <section id="results" class="view">
+      <div class="quiz-shell" style="max-width: 600px;">
+        <div class="results-card">
+          <div class="score-circular-progress">
+            <svg class="score-circle-svg" viewBox="0 0 180 180">
+              <circle class="score-circle-bg" cx="90" cy="90" r="84"></circle>
+              <circle id="scoreCircleVal" class="score-circle-val" cx="90" cy="90" r="84"></circle>
+            </svg>
+            <div id="scorePercentage" class="score-text">0%</div>
+          </div>
+
+          <h2 id="scorePhrase" class="score-phrase">Perfect Score!</h2>
+          <p id="scoreDetails" class="score-details">You answered 8 out of 10 questions correctly.</p>
+          
+          <div id="categoryBreakdown" class="category-breakdown">
+            <!-- Category breakdown chart injected via JS -->
+          </div>
+
+          <div style="display:flex; justify-content:center; gap:15px;">
+            <button class="btn" onclick="QuizApp.switchView('home')">
+              <i class="fas fa-home"></i> Home
+            </button>
+            <button class="btn btn-secondary" onclick="QuizApp.promptQuizSettings(QuizApp.selectedCategory)">
+              <i class="fas fa-redo"></i> Retake Quiz
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: STUDY HUB -->
+    <section id="study" class="view">
+      <h3 class="section-title">High-Yield Summaries</h3>
+      <p style="color:var(--text-muted); margin-bottom: 2rem; max-width: 800px;">
+        Select a domain to review high-yield core notes compiled from medical attachments, CPR, obesity, hypertension, rheumatic fever, and hydrocephalus clinical sheets.
+      </p>
+      <div id="studyHubGrid" class="study-hub-grid">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 5: BOOKMARKS -->
+    <section id="bookmarks" class="view">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-white); padding-bottom: 0.5rem;">
+        <h3 class="section-title" style="margin-bottom:0; border-bottom:none;">Bookmarked Questions</h3>
+        <button id="startBookmarksQuiz" class="btn" style="padding: 8px 18px; font-size: 0.9rem;">
+          <i class="fas fa-graduation-cap"></i> Practice Bookmarks
+        </button>
+      </div>
+      <div id="bookmarksList">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 6: ANALYTICS -->
+    <section id="analytics" class="view">
+      <h3 class="section-title">Performance Analytics</h3>
+      
+      <div class="domain-grid" style="grid-template-columns: 1fr; gap: 20px; max-width: 600px; margin: 0 auto;">
+        <div class="domain-card" style="padding: 2rem;">
+          <h3 style="color: var(--text-white); margin-bottom: 1.5rem;"><i class="fas fa-history"></i> Recent Quiz Attempts</h3>
+          <p style="font-size: 0.9rem; color:var(--text-muted); margin-bottom: 1rem;">
+            Total Quizzes Taken: <strong id="totalQuizzesTaken" style="color: var(--text-light)">0</strong>
+          </p>
+          <div id="historyList" class="history-list">
+            <!-- Injected via JS -->
+          </div>
+          
+          <button class="btn btn-secondary btn-danger" style="margin-top: 2rem; align-self: flex-start;" onclick="QuizApp.resetHistory()">
+            <i class="fas fa-trash-alt"></i> Clear History
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DECORATIVE FOOTER -->
+  <footer>
+    <p>Deema Medical Quiz Portal — Clinical Continuous Learning</p>
+  </footer>
+
+  <!-- DYNAMIC MODAL -->
+  <div id="notesModal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close Modal">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="modal-title" id="modalTitle">Study Notes Summary</h2>
+      <div class="modal-body" id="modalBody">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Imports -->
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
